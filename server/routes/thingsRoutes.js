@@ -8,6 +8,18 @@ router.get("/", async (req, res) => {
   console.log(things);
   res.json(things);
 });
+router.post("/", async (req, res, next) => {
+  try {
+    const thing = req.body;
+    const newThing = await Thing.create(thing);
+
+    res.json(newThing);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Error creating a thing!";
+    next(error);
+  }
+});
 
 router.get("/:idThing", async (req, res, next) => {
   const { idThing } = req.params;
@@ -34,8 +46,6 @@ router.delete("/:idThing", async (req, res, next) => {
     next(error);
   }
 });
-
-router.post("/things/:idThing", (req, res) => {});
 
 // router.put("/things/:idThing", (req, res) => {});
 
