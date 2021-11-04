@@ -1,46 +1,34 @@
 require("dotenv").config();
-const inquirer = require("inquirer");
 require("./database/index");
+const inquirer = require("inquirer");
 
 const initializeServer = require("./server/index");
-
-const port = process.env.SERVER_PORT || 5000;
 
 (async () => {
   const answers = await inquirer.prompt([
     {
-      name: "apis",
-      type: "confirm",
-      message: "¿Ya sabes hacer APIs?",
-      default: false,
-    },
-    {
-      name: "name",
+      name: "port",
       type: "input",
-      message: "¿Cómo te llamas?",
-      default: "Luis",
+      message: "¿En qué puerto quieres que se inicie la API?",
+      default: 4500,
     },
     {
-      name: "technologies",
+      name: "base de dades",
       type: "list",
-      message: "¿Cuáles son tus tecnologías favoritas?",
+      message: "¿Qué base de datos quieres usar? ",
       choices: [
-        {
-          name: "JavaScript",
-          value: "js",
-        },
-        {
-          name: "More JavaScript",
-          value: "more-js",
-        },
-        {
-          name: "More more JavaScript",
-          value: "more-more-js",
-        },
+        { name: "producción", value: "js" },
+        { name: "pruebas", value: "test" },
       ],
-      default: "js",
+    },
+
+    {
+      name: "permitir",
+      type: "confirm",
+      message:
+        "¿Quieres permitir que los clientes puedan crear, borrar y modificar?",
     },
   ]);
-  console.log(answers);
-  initializeServer(port);
+
+  initializeServer(answers.port);
 })();
