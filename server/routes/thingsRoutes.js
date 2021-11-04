@@ -47,6 +47,17 @@ router.delete("/:idThing", async (req, res, next) => {
   }
 });
 
+router.put("/", async (req, res, next) => {
+  try {
+    const { idThing } = req.body;
+    await Thing.findByIdAndUpdate(idThing, req.body);
+    res.json(req.body);
+  } catch (error) {
+    error.code = 403;
+    next(error);
+  }
+});
+
 // router.put("/things/:idThing", (req, res) => {});
 
 module.exports = router;
